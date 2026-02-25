@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+<nav class="menu">
+    <div>
+        <a>Example</a>
+        <ul>
+            <li><a>one</a></li>
+            <li><a>two</a></li>
+            <li><a>three</a></li>
+        </ul>
+    </div>
+    <div>
+        <a>Example</a>
+        <ul>
+            <li><a>one</a></li>
+            <li><a>two</a></li>
+            <li><a>three</a></li>
+        </ul>
+    </div>
+    <span style="width: 100%"></span>
+    {% if user and user.is_authenticated %}
+    <div>
+        <a><img src="/profile/picture/me" alt="Profile" class="pfp"/></a>
+        <ul style="right: 0px; left: unset;">
+            <li><a href="/settings">Settings</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </div>
+    {% else %}
+    <a href="/login">Sign In</a>
+    <a href="/register"><span class="box">Sign Up</span></a>
+    {% endif %}
+</nav>
+{% block content %}
+{% endblock %}
+</body>
+</html>

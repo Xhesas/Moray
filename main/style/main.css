@@ -1,0 +1,193 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #212121;
+    color: #f5f5f5;
+    text-align: center;
+    padding: 5px;
+}
+.main, .footer {
+    border: 2px solid #555;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #313131;
+}
+
+a {
+    text-decoration: none;
+    color: #d9a633;
+    cursor: pointer;
+}
+a:hover {
+    color: #f2e0b8;
+}
+
+.menu {
+    background-image: linear-gradient(to bottom right, #f4c835 , #f46035);
+    display: flex;
+    height: 54px;
+    white-space: nowrap;
+}
+.menu div {
+    cursor: pointer;
+}
+.menu > div, .menu > a {
+    position: relative;
+}
+.menu a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    border-radius: 100%;
+}
+.menu div ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #d9a633;
+    border-radius: 0 0 12px 12px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    min-width: 150px;
+    width: max-content;
+    max-width: 512px;
+    z-index: 1000;
+}
+.menu div ul li {
+    width: 100%;
+}
+.menu div ul li a {
+    display: block;
+    padding: 10px;
+    text-align: left;
+    color: white;
+}
+.menu div:hover ul {
+    display: block;
+}
+.menu a:hover,
+.menu div ul li a:hover {
+    background-color: #f47835;
+    color: #000;
+    border-radius: 10px;
+    transition: border-radius .3s cubic-bezier(0.03, 1.12, 0.28, 0.87), color 1s, background-color .3s;
+}
+.menu a .box {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 4px;
+}
+.menu a:hover .box {
+    border-color: #000;
+    transition: border-color 1s;
+}
+
+.danger-button {
+    border: 2px solid red;
+    border-radius: 8px;
+    padding: 6px;
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+    margin: 8px;
+}
+.danger-button:hover {
+    color: white;
+    background-color: red;
+    transition: color .3s, background-color .3s;
+}
+
+.main ul {
+    list-style-type: none;
+}
+.main li {
+    font-size: 16px;
+    margin: 12px;
+}
+.main li:has(> .danger-button) {
+    margin: 16px;
+}
+
+.submit_button {
+    cursor: pointer;
+    padding: 8px;
+    border: 3px solid #f46035;
+    border-radius: 8px;
+    background-color: #f4c835;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+}
+.submit_button:hover {
+    border-color: #ff7851;
+    background-color: #ffdd6a;
+}
+.fixed_button {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+}
+.submit_button:disabled {
+    cursor: not-allowed;
+    border-color: #965644;
+    background-color: #93803e;
+}
+
+.pfp {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+}
+
+input.edit_pfp {
+    display: none;
+}
+label.edit_pfp {
+    cursor: pointer;
+    margin-left: -30px;
+}
+
+.menu .pfp {
+    width: 50px;
+    height: 50px;
+}
+.menu a:has(> .pfp) {
+    padding-top: 2px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: #313131;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.modal h1,
+.modal h2,
+.modal h3 {
+    margin-top: 0;
+}
