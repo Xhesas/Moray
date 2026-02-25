@@ -1,3 +1,4 @@
+import argparse
 import os.path
 import re
 import secrets
@@ -8,6 +9,7 @@ from flask import Flask, request, render_template, redirect, url_for, send_file,
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, configure_uploads, IMAGES  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -183,4 +185,12 @@ def route_script(script):
     return send_from_directory('script/', script)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--Debug", action="store_true", help="Activate debug mode")
+    args = parser.parse_args()
+    # set proper wsgi for app if not debug
+    if not args.Debug:
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+        )
+    app.run(debug=args.Debug)
