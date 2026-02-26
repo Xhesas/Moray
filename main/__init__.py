@@ -5,10 +5,12 @@ import secrets
 from datetime import timedelta
 from functools import wraps
 
-from flask import Flask, request, render_template, redirect, url_for, send_file, send_from_directory, flash
+from flask import Flask, request, render_template, redirect, url_for, send_file, send_from_directory, flash, \
+    make_response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, configure_uploads, IMAGES  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
+from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -183,6 +185,52 @@ def route_settings():
 @app.route("/js/<script>")
 def route_script(script):
     return send_from_directory('script/', script)
+
+@app.route("/resources/<resource>")
+def route_resources(resource):
+    return send_from_directory('static/', resource)
+
+@app.route("/favicon.ico")
+def route_favicon():
+    return send_file('static/favicon.ico')
+
+@app.route("/contact")
+def route_contact():
+    return render_template('contact.html', user=current_user)
+
+@app.route("/info/<info>")
+def route_info(info):
+    match info:
+        case "data":
+            return render_template('info.html', info="Data Policy", content=[
+                {'type': 'h2', 'text': 'Data collected from serving requests'},
+                {'type': 'p' , 'text': 'Data collected from serving requests including request path, header, resulting http code, time of request and ip address are stored for '
+                                       'the purpose of keeping server integrity, preventing malicious behavior and moderating visits. All of the produced information is kept '
+                                       'secure and only accessible to the server owners.'},
+                {'type': 'br', 'text': ''},
+                {'type': 'h2', 'text': 'Account data'},
+                {'type': 'p' , 'text': 'Data produced from account activities are stored securely and are only accessible to server owners and moderation. Passwords are always '
+                                       'stored encrypted. Data uploaded by a user like profile pictures or other profile information are available to all other users.'},
+                {'type': 'br', 'text': ''},
+                {'type': 'h2', 'text': 'Data collected from forms and other methods of posting'},
+                {'type': 'p' , 'text': 'Data resulting from proactive posts like forms may be stored on the server along with request path, header, time of request, ip address '
+                                       'and client information and are only accessible to server owners.'}
+            ])
+        case "cookies":
+            return render_template('info.html', info="Cookies Policy", content=[
+                {'type': 'h2', 'text': 'Cookie usage'},
+                {'type': 'p' , 'text': 'Cookies are only used for essential functionalities such as session management as part of authentication. All cookies are strictly '
+                                       'https only and non cross origin.'},
+                {'type': 'br', 'text': ''},
+                {'type': 'h2', 'text': 'Cookie creation'},
+                {'type': 'p' , 'text': 'Cookies are only created and set when a user enters a session i.e. signs in with an account.'}
+            ])
+    return handle_exception(404)
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    code = e if type(e) == int else e.code
+    return make_response(render_template('exception.html', code=code), code)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

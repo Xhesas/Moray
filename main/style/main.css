@@ -7,7 +7,7 @@ body {
 }
 .main, .footer {
     border: 2px solid #555;
-    padding: 15px;
+    padding: 15px 10%;
     margin-top: 20px;
     background-color: #313131;
 }
@@ -190,4 +190,79 @@ label.edit_pfp {
 .modal h2,
 .modal h3 {
     margin-top: 0;
+}
+
+/* footer stuff */
+.footer {
+    color: #ddd;
+    padding: 30px 20px;
+}
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+.footer-logo {
+    flex: 1;
+    text-align: center;
+}
+.footer-logo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+.footer-logo p {
+    font-size: 14px;
+    color: #bbb;
+}
+.footer-links,
+.footer-info {
+    flex: 1;
+}
+.footer-links h4,
+.footer-info h4 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-links ul li {
+    margin-bottom: 5px;
+}
+
+.footer-links ul li a {
+    color: #bbb;
+    text-decoration: none;
+    font-size: 14px;
+}
+.footer-links ul li a:hover {
+    color: #fff;
+}
+.footer-info p {
+    font-size: 14px;
+    color: #bbb;
+    margin: 5px 0;
+}
+/* Footer bottom */
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+/* Responsive design */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
 }

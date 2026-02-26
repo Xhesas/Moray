@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+
+{% block title %}Info - {{ info }}{% endblock %}
+
+{% block content %}
+<div class="main">
+    <h1>{{ info }}</h1>
+    <br>
+    {% if content %}
+    {% for element in content %}
+    <{{ element.type }}>{{ element.text }}</{{ element.type }}>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
