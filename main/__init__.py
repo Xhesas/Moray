@@ -1,241 +1,59 @@
 import argparse
-import os.path
-import re
 import secrets
 from datetime import timedelta
-from functools import wraps
 
-from flask import Flask, request, render_template, redirect, url_for, send_file, send_from_directory, flash, \
-    make_response
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
-from flask_uploads import UploadSet, configure_uploads, IMAGES  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
+from flask import Flask, render_template, make_response
+from flask_uploads import configure_uploads  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
 from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["UPLOADED_PHOTOS_DEST"] = "uploads/profile_pictures"
-app.config["SECRET_KEY"] = str(secrets.SystemRandom().getrandbits(128))
+from main.src.extensions import db, login_manager, profile_pictures
 
-# Session configuration
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+def create_app():
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOADED_PHOTOS_DEST"] = "uploads/profile_pictures"
+    app.config["SECRET_KEY"] = str(secrets.SystemRandom().getrandbits(128))
 
-db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "login"
+    # Session configuration
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
-profile_pictures = UploadSet("photos", IMAGES)
-configure_uploads(app, profile_pictures)
+    db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.route_login"
 
+    configure_uploads(app, profile_pictures)
 
-class Users(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(250), unique=True, nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-    role = db.Column(db.String(20), default='user')
+    from main.src.models import Users
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Users.query.get(int(user_id))
 
-    def has_role(self, role):
-        return self.role == role
+    @app.errorhandler(HTTPException)
+    def handle_exception(e):
+        code = e if type(e) == int else e.code
+        return make_response(render_template('exception.html', code=code), code)
 
-    def is_admin(self):
-        return self.role == 'admin'
+    from main.src.auth import auth
+    app.register_blueprint(auth)
 
-def role_required(role):
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            if not current_user.is_authenticated or not current_user.has_role(role):
-                flash('Access denied. Insufficient permissions.')
-                return redirect(url_for('route_index'))
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
+    from main.src.static import static
+    app.register_blueprint(static)
 
-with app.app_context():
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Users.query.get(int(user_id))
-
-@app.route('/')
-def route_index():
-    return render_template("home.html", user=current_user)
-
-@app.route('/main.css')
-def route_style():
-    return send_file('style/main.css')
-
-@app.route('/register', methods=["GET", "POST"])
-def route_register():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if not re.fullmatch(r"[a-zA-Z]+[\w]*", username):
-            return render_template("sign_up.html", error="Not a valid username!")
-        if not 2 < len(username) < 31:
-            return render_template("sign_up.html", error="Username has an invalid length!")
-
-        if Users.query.filter_by(username=username).first():
-            return render_template("sign_up.html", error="Username already taken!")
-
-        hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
-
-        new_user = Users(username=username, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        return redirect(url_for("login"))
-
-    return render_template("sign_up.html")
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        user = Users.query.filter_by(username=username).first()
-
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for("route_index"))
-        else:
-            return render_template("login.html", error="Invalid username or password")
-
-    return render_template("login.html")
-
-@app.route("/logout")
-@login_required
-def route_logout():
-    logout_user()
-    return redirect(url_for("route_index"))
-
-@app.route("/delete_account")
-@login_required
-def route_delete_account():
-    delete_account(current_user.username)
-    logout_user()
-    return redirect(url_for("route_index"))
-
-def delete_account(account):
-    user = Users.query.filter_by(username=account).first()
-    db.session.delete(user)
-    db.session.commit()
-    if os.path.exists('uploads/profile_pictures/' + account):
-        os.remove('uploads/profile_pictures/' + account)
-
-def change_account_name(account, new_name):
-    user = Users.query.filter_by(username=account).first()
-    user.username = new_name
-    db.session.commit()
-    if os.path.exists('uploads/profile_pictures/' + account):
-        os.rename('uploads/profile_pictures/' + account, 'uploads/profile_pictures/' + new_name)
-
-@app.route("/upload_profile_picture", methods=["POST"])
-@login_required
-def upload_pfp():
-    if "pfp" in request.files:
-        profile_pictures.save(request.files["pfp"], name=current_user.username)
-    return redirect(url_for("route_index"))
-
-@app.route("/profile/picture/<profile>")
-def route_pfp(profile):
-    return send_from_directory('uploads/profile_pictures/', profile)\
-        if os.path.exists('uploads/profile_pictures/' + profile)\
-        else send_file('static/empty_pfp.svg')
-
-@app.route("/profile/picture/me")
-@login_required
-def route_pfp_me():
-    return redirect('/profile/picture/' + current_user.username, code=301)
-
-@app.route("/settings", methods=["GET", "POST"])
-@login_required
-def route_settings():
-    if request.method == 'POST':
-        errors = []
-        if "name" in request.form:
-            username = request.form.get('name')
-            if not re.fullmatch(r"[a-zA-Z]+[\w]*", username):
-                errors.append("Not a valid username!")
-            elif not 2 < len(username) < 31:
-                errors.append("Username has an invalid length!")
-            elif Users.query.filter_by(username=username).first():
-                errors.append("Username already taken!")
-            else:
-                change_account_name(current_user.username, username)
-        if "pfp" in request.files:
-            profile_pictures.save(request.files["pfp"], name=current_user.username)
-
-        # return with errors if errors occurred
-        if len(errors) > 0:
-            return render_template('settings.html', user=current_user, errors=errors)
-    return render_template('settings.html', user=current_user)
-
-@app.route("/js/<script>")
-def route_script(script):
-    return send_from_directory('script/', script)
-
-@app.route("/resources/<resource>")
-def route_resources(resource):
-    return send_from_directory('static/', resource)
-
-@app.route("/favicon.ico")
-def route_favicon():
-    return send_file('static/favicon.ico')
-
-@app.route("/contact")
-def route_contact():
-    return render_template('contact.html', user=current_user)
-
-@app.route("/info/<info>")
-def route_info(info):
-    match info:
-        case "data":
-            return render_template('info.html', info="Data Policy", content=[
-                {'type': 'h2', 'text': 'Data collected from serving requests'},
-                {'type': 'p' , 'text': 'Data collected from serving requests including request path, header, resulting http code, time of request and ip address are stored for '
-                                       'the purpose of keeping server integrity, preventing malicious behavior and moderating visits. All of the produced information is kept '
-                                       'secure and only accessible to the server owners.'},
-                {'type': 'br', 'text': ''},
-                {'type': 'h2', 'text': 'Account data'},
-                {'type': 'p' , 'text': 'Data produced from account activities are stored securely and are only accessible to server owners and moderation. Passwords are always '
-                                       'stored encrypted. Data uploaded by a user like profile pictures or other profile information are available to all other users.'},
-                {'type': 'br', 'text': ''},
-                {'type': 'h2', 'text': 'Data collected from forms and other methods of posting'},
-                {'type': 'p' , 'text': 'Data resulting from proactive posts like forms may be stored on the server along with request path, header, time of request, ip address '
-                                       'and client information and are only accessible to server owners.'}
-            ])
-        case "cookies":
-            return render_template('info.html', info="Cookies Policy", content=[
-                {'type': 'h2', 'text': 'Cookie usage'},
-                {'type': 'p' , 'text': 'Cookies are only used for essential functionalities such as session management as part of authentication. All cookies are strictly '
-                                       'https only and non cross origin.'},
-                {'type': 'br', 'text': ''},
-                {'type': 'h2', 'text': 'Cookie creation'},
-                {'type': 'p' , 'text': 'Cookies are only created and set when a user enters a session i.e. signs in with an account.'}
-            ])
-    return handle_exception(404)
-
-@app.errorhandler(HTTPException)
-def handle_exception(e):
-    code = e if type(e) == int else e.code
-    return make_response(render_template('exception.html', code=code), code)
+    return app
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--Debug", action="store_true", help="Activate debug mode")
     args = parser.parse_args()
+    app = create_app()
     # set proper wsgi for app if not debug
     if not args.Debug:
         app.wsgi_app = ProxyFix(
