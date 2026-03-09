@@ -1,0 +1,40 @@
+{% extends 'default.html' %}
+
+{% block title %}Learn{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="vocab_card"> {# vocab learning module #}
+        <p>what does</p>
+        <h3 id="vocab"></h3>
+        <p>mean?</p>
+        <br>
+        <label>Input your answer:
+            <input id="answer" type="text" />
+        </label>
+    </div>
+</div>
+
+<div id="popup" class="modal" style="display: flex;">
+    <div class="modal-content">
+        <h2>Choose Game</h2>
+        <label> Select a mode
+            <select id="select_mode">
+                <option value="default">default</option>
+                <option value="reverse">reverse</option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+        </label>
+        <button class="submit_button" onclick="init()">done</button>
+    </div>
+</div>
+
+<script>
+    words = {{ vocabs|safe }}
+</script>
+
+<script src="/js/learn.js"></script>
+<script src="/js/common.js"></script>
+{% endblock %}

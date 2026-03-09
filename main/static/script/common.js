@@ -1,12 +1,14 @@
 
 // popup function
-function popup(elements) {
+function popup(elements, enable_close=true) {
     const modal = document.createElement("div");
     const modal_content = document.createElement("div");
     const span = document.createElement("span");
 
+    modal.id = 'popup';
+
     span.innerHTML = "&times;";
-    modal_content.appendChild(span);
+    (enable_close) && modal_content.appendChild(span);
     for (el of elements) {
         modal_content.appendChild(el);
     }
@@ -20,13 +22,17 @@ function popup(elements) {
 
     document.body.appendChild(modal);
 
-    span.addEventListener("click", () => {
-    document.body.removeChild(modal);
+    (enable_close) && span.addEventListener("click", () => {
+        document.body.removeChild(modal);
     });
 
-    window.addEventListener("click", (event) => {
+    (enable_close) && window.addEventListener("click", (event) => {
         if (event.target === modal) {
-    document.body.removeChild(modal);
+            document.body.removeChild(modal);
         }
     });
+}
+
+function yeet_popup() {
+    document.body.removeChild(document.getElementById('popup'));
 }

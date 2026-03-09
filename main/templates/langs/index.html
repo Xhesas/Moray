@@ -1,0 +1,21 @@
+{% extends 'default.html' %}
+
+{% block title %}{{ lang }}{% endblock %}
+
+{% block content %}
+<div class="main">
+    <h2>{{ lang }}</h2>
+    <span>
+        {% block description %}
+        {% endblock %}
+    </span>
+    <br>
+    <hr>
+    <br>
+    <h3>start learning</h3>
+    <ul>
+        <li><a href="/vocabs/{{ lang }}/learn">practice</a></li>
+        <li><a href="/vocabs/{{ lang }}/show">vocabulary</a></li>
+    </ul>
+</div>
+{% endblock %}

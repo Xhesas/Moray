@@ -1,13 +1,17 @@
 import argparse
 import secrets
 from datetime import timedelta
+from os import chdir
+from os.path import dirname, abspath
 
-from flask import Flask, render_template, make_response
+from flask import Flask, make_response
 from flask_uploads import configure_uploads  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
 from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from main.src.extensions import db, login_manager, profile_pictures
+from main.src.extensions import db, login_manager, profile_pictures, langs, default_render_template
+
+chdir(dirname(abspath(__file__)))
 
 def create_app():
     app = Flask(__name__)
@@ -36,13 +40,16 @@ def create_app():
     @app.errorhandler(HTTPException)
     def handle_exception(e):
         code = e if type(e) == int else e.code
-        return make_response(render_template('exception.html', code=code), code)
+        return make_response(default_render_template('exception.html', code=code), code)
 
     from main.src.auth import auth
     app.register_blueprint(auth)
 
     from main.src.static import static
     app.register_blueprint(static)
+
+    from main.src.lang import lang_app
+    app.register_blueprint(lang_app)
 
     with app.app_context():
         db.create_all()

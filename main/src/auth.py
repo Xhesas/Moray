@@ -1,11 +1,11 @@
 import os
 import re
 
-from flask import Blueprint, redirect, url_for, request, render_template
+from flask import Blueprint, redirect, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from .extensions import db, profile_pictures
+from .extensions import db, profile_pictures, default_render_template
 from .models import Users
 
 auth = Blueprint('auth', __name__)
@@ -17,12 +17,12 @@ def route_register():
         password = request.form.get("password")
 
         if not re.fullmatch(r"[a-zA-Z]+[\w]*", username):
-            return render_template("sign_up.html", error="Not a valid username!")
+            return default_render_template("sign_up.html", error="Not a valid username!")
         if not 2 < len(username) < 31:
-            return render_template("sign_up.html", error="Username has an invalid length!")
+            return default_render_template("sign_up.html", error="Username has an invalid length!")
 
         if Users.query.filter_by(username=username).first():
-            return render_template("sign_up.html", error="Username already taken!")
+            return default_render_template("sign_up.html", error="Username already taken!")
 
         hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
 
@@ -32,7 +32,7 @@ def route_register():
 
         return redirect(url_for("auth.route_login"))
 
-    return render_template("sign_up.html")
+    return default_render_template("sign_up.html")
 
 @auth.route("/login", methods=["GET", "POST"])
 def route_login():
@@ -46,9 +46,9 @@ def route_login():
             login_user(user, remember=True)
             return redirect('/')
         else:
-            return render_template("login.html", error="Invalid username or password")
+            return default_render_template("login.html", error="Invalid username or password")
 
-    return render_template("login.html")
+    return default_render_template("login.html")
 
 @auth.route("/logout")
 @login_required
@@ -92,8 +92,8 @@ def route_settings():
 
         # return with errors if errors occurred
         if len(errors) > 0:
-            return render_template('settings.html', user=current_user, errors=errors)
-    return render_template('settings.html', user=current_user)
+            return default_render_template('settings.html', user=current_user, errors=errors)
+    return default_render_template('settings.html', user=current_user)
 
 def delete_account(account):
     user = Users.query.filter_by(username=account).first()

@@ -1,0 +1,21 @@
+{% extends 'default.html' %}
+
+{% block title %}Vocab List{% endblock %}
+
+{% block content %}
+<div class="main">
+    <h2>{{ title }}</h2>
+    <table>
+        <tr>
+            <th>{{ languages.w }}</th>
+            <th>{{ languages.t }}</th>
+        </tr>
+        {% for vocab in vocabs %}
+        <tr>
+            <td>{{ vocab.w }}</td>
+            <td>{{ vocab.t }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

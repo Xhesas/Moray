@@ -10,19 +10,11 @@
 <body>
 <nav class="menu">
     <div>
-        <a>Example</a>
+        <a>Languages</a>
         <ul>
-            <li><a>one</a></li>
-            <li><a>two</a></li>
-            <li><a>three</a></li>
-        </ul>
-    </div>
-    <div>
-        <a>Example</a>
-        <ul>
-            <li><a>one</a></li>
-            <li><a>two</a></li>
-            <li><a>three</a></li>
+            {% for el in langs.keys() %}
+            <li><a href="/{{ el }}">{{ el }}</a></li>
+            {% endfor %}
         </ul>
     </div>
     <span style="width: 100%"></span>

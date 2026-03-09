@@ -1,13 +1,15 @@
 import os
 
-from flask import Blueprint, render_template, send_file, send_from_directory, redirect, abort
+from flask import Blueprint, send_file, send_from_directory, redirect, abort
 from flask_login import current_user, login_required
+
+from main.src.extensions import default_render_template
 
 static = Blueprint('static', __name__)
 
 @static.route('/')
 def route_index():
-    return render_template("home.html", user=current_user)
+    return default_render_template("home.html", user=current_user)
 
 @static.route('/main.css')
 def route_style():
@@ -38,13 +40,13 @@ def route_favicon():
 
 @static.route("/contact")
 def route_contact():
-    return render_template('contact.html', user=current_user)
+    return default_render_template('contact.html', user=current_user)
 
 @static.route("/info/<info>")
 def route_info(info):
     match info:
         case "data":
-            return render_template('info.html', info="Data Policy", content=[
+            return default_render_template('info.html', info="Data Policy", content=[
                 {'type': 'h2', 'text': 'Data collected from serving requests'},
                 {'type': 'p' , 'text': 'Data collected from serving requests including request path, header, resulting http code, time of request and ip address are stored for '
                                        'the purpose of keeping server integrity, preventing malicious behavior and moderating visits. All of the produced information is kept '
@@ -59,7 +61,7 @@ def route_info(info):
                                        'and client information and are only accessible to server owners.'}
             ])
         case "cookies":
-            return render_template('info.html', info="Cookies Policy", content=[
+            return default_render_template('info.html', info="Cookies Policy", content=[
                 {'type': 'h2', 'text': 'Cookie usage'},
                 {'type': 'p' , 'text': 'Cookies are only used for essential functionalities such as session management as part of authentication. All cookies are strictly '
                                        'https only and non cross origin.'},
