@@ -1,0 +1,287 @@
+{
+    "deu": [
+        {
+            "deu": "ich",
+            "eng": "I"
+        },
+        {
+            "deu": "du",
+            "eng": "you"
+        },
+        {
+            "deu": "sie",
+            "eng": "she"
+        },
+        {
+            "deu": "er",
+            "eng": "he"
+        },
+        {
+            "deu": "es",
+            "eng": "it"
+        },
+        {
+            "deu": "wir",
+            "eng": "we"
+        },
+        {
+            "deu": "ihr",
+            "eng": [
+                "y'all",
+                "you"
+            ]
+        },
+        {
+            "deu": "sie",
+            "eng": "they"
+        },
+        {
+            "deu": "die",
+            "eng": "the"
+        },
+        {
+            "deu": "der",
+            "eng": "the"
+        },
+        {
+            "deu": "das",
+            "eng": "the"
+        },
+        {
+            "deu": "dieses",
+            "eng": "this"
+        },
+        {
+            "deu": "jenes",
+            "eng": "that"
+        },
+        {
+            "deu": "hier",
+            "eng": "here"
+        },
+        {
+            "deu": "dort",
+            "eng": "there"
+        },
+        {
+            "deu": "wer",
+            "eng": "who"
+        },
+        {
+            "deu": "was",
+            "eng": "what"
+        },
+        {
+            "deu": "wo",
+            "eng": "where"
+        },
+        {
+            "deu": "wann",
+            "eng": "when"
+        },
+        {
+            "deu": "wie",
+            "eng": "how"
+        },
+        {
+            "deu": "eins",
+            "eng": "one"
+        },
+        {
+            "deu": "zwei",
+            "eng": "two"
+        },
+        {
+            "deu": "drei",
+            "eng": "three"
+        },
+        {
+            "deu": "vier",
+            "eng": "four"
+        },
+        {
+            "deu": "fünf",
+            "eng": "five"
+        },
+        {
+            "deu": "Frau",
+            "eng": "woman"
+        },
+        {
+            "deu": "Mann",
+            "eng": "man"
+        },
+        {
+            "deu": "Mensch",
+            "eng": "human"
+        },
+        {
+            "deu": "Kind",
+            "eng": "child"
+        },
+        {
+            "deu": "Mutter",
+            "eng": "mother"
+        },
+        {
+            "deu": "Vater",
+            "eng": "father"
+        },
+        {
+            "deu": "Schwester",
+            "eng": "sister"
+        },
+        {
+            "deu": "Bruder",
+            "eng": "brother"
+        },
+        {
+            "deu": "Freund",
+            "eng": "friend"
+        },
+        {
+            "deu": "Tier",
+            "eng": "animal"
+        },
+        {
+            "deu": "Fisch",
+            "eng": "fish"
+        },
+        {
+            "deu": "Vogel",
+            "eng": "bird"
+        },
+        {
+            "deu": "Hund",
+            "eng": "dog"
+        }
+    ],
+    "nld": [],
+    "spa": [],
+    "fra": [],
+    "ukr": [],
+    "jpn": [],
+    "bel": [
+        {
+            "bel": "Беларусь/Biełaruś",
+            "eng": "Belarus"
+        }
+    ],
+    "lvk": [
+        {
+            "lvk": "mak",
+            "eng": "I"
+        },
+        {
+            "lvk": "mavk",
+            "eng": "you"
+        },
+        {
+            "lvk": "mamk",
+            "eng": "it"
+        },
+        {
+            "lvk": "mek",
+            "eng": "we"
+        },
+        {
+            "lvk": "mevk",
+            "eng": [
+                "y'all",
+                "you"
+            ]
+        },
+        {
+            "lvk": "memk",
+            "eng": "they"
+        },
+        {
+            "lvk": "qvak",
+            "eng": "the"
+        },
+        {
+            "lvk": "nak",
+            "eng": "the"
+        },
+        {
+            "lvk": "qvamak",
+            "eng": "this"
+        },
+        {
+            "lvk": "vevakas",
+            "eng": "here"
+        },
+        {
+            "lvk": "siŋak",
+            "eng": "who"
+        },
+        {
+            "lvk": "simak",
+            "eng": "what"
+        },
+        {
+            "lvk": "mo",
+            "eng": "how"
+        },
+        {
+            "lvk": "aŋ",
+            "eng": "one"
+        },
+        {
+            "lvk": "ve",
+            "eng": "two"
+        },
+        {
+            "lvk": "klaŋ",
+            "eng": "three"
+        },
+        {
+            "lvk": "gle",
+            "eng": "four"
+        },
+        {
+            "lvk": "ŋav",
+            "eng": "five"
+        },
+        {
+            "lvk": "val",
+            "eng": "six"
+        },
+        {
+            "lvk": "aŋak",
+            "eng": "human"
+        },
+        {
+            "lvk": "niniak",
+            "eng": "child"
+        },
+        {
+            "lvk": "sivak",
+            "eng": "parent"
+        },
+        {
+            "lvk": "givmoak",
+            "eng": "sibling"
+        },
+        {
+            "lvk": "kelinhak",
+            "eng": "friend"
+        },
+        {
+            "lvk": "vak",
+            "eng": "animal"
+        },
+        {
+            "lvk": "bevak",
+            "eng": "fish"
+        },
+        {
+            "lvk": "gaqlak",
+            "eng": "bird"
+        },
+        {
+            "lvk": "hoinakasak",
+            "eng": "dog"
+        }
+    ]
+}

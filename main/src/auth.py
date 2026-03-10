@@ -6,7 +6,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .extensions import db, profile_pictures, default_render_template
-from .models import Users
+from .models import Users, get_user_by_id_or_name
 
 auth = Blueprint('auth', __name__)
 
@@ -67,7 +67,7 @@ def route_delete_account():
 @login_required
 def upload_pfp():
     if "pfp" in request.files:
-        profile_pictures.save(request.files["pfp"], name=current_user.username)
+        profile_pictures.save(request.files["pfp"], name=current_user.id)
     return redirect('/')
 
 @auth.route("/settings", methods=["GET", "POST"])
@@ -86,9 +86,9 @@ def route_settings():
             else:
                 change_account_name(current_user.username, username)
         if "pfp" in request.files:
-            if os.path.exists('uploads/profile_pictures/' + current_user.username):
-                os.remove('uploads/profile_pictures/' + current_user.username)
-            profile_pictures.save(request.files["pfp"], name=current_user.username)
+            if os.path.exists('uploads/profile_pictures/' + str(current_user.id)):
+                os.remove('uploads/profile_pictures/' + str(current_user.id))
+            profile_pictures.save(request.files["pfp"], name=str(current_user.id))
 
         # return with errors if errors occurred
         if len(errors) > 0:
@@ -96,15 +96,13 @@ def route_settings():
     return default_render_template('settings.html', user=current_user)
 
 def delete_account(account):
-    user = Users.query.filter_by(username=account).first()
+    user = get_user_by_id_or_name(account)
     db.session.delete(user)
     db.session.commit()
-    if os.path.exists('uploads/profile_pictures/' + account):
-        os.remove('uploads/profile_pictures/' + account)
+    if os.path.exists('uploads/profile_pictures/' + str(user.id)):
+        os.remove('uploads/profile_pictures/' + str(user.id))
 
 def change_account_name(account, new_name):
-    user = Users.query.filter_by(username=account).first()
+    user = get_user_by_id_or_name(account)
     user.username = new_name
     db.session.commit()
-    if os.path.exists('uploads/profile_pictures/' + account):
-        os.rename('uploads/profile_pictures/' + account, 'uploads/profile_pictures/' + new_name)

@@ -4,6 +4,7 @@ from flask import Blueprint, send_file, send_from_directory, redirect, abort
 from flask_login import current_user, login_required
 
 from main.src.extensions import default_render_template
+from main.src.models import get_user_by_id_or_name
 
 static = Blueprint('static', __name__)
 
@@ -17,8 +18,9 @@ def route_style():
 
 @static.route("/profile/picture/<profile>")
 def route_pfp(profile):
-    return send_from_directory('uploads/profile_pictures/', profile) \
-        if os.path.exists('uploads/profile_pictures/' + profile) \
+    user = get_user_by_id_or_name(profile)
+    return send_from_directory('uploads/profile_pictures/', str(user.id)) \
+        if os.path.exists('uploads/profile_pictures/' + str(user.id)) \
         else send_file('static/resources/empty_pfp.svg')
 
 @static.route("/profile/picture/me")

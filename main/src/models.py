@@ -27,3 +27,6 @@ def role_required(role):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
+def get_user_by_id_or_name(user):
+    return (Users.query.filter_by(id=user) if type(user) == int else Users.query.filter_by(username=user)).first()

@@ -27,7 +27,7 @@ def route_show_vocabs(lang, group):
 def route_learn_vocabs(lang):
     if not lang in langs.keys():
         abort(404)
-    vocabs = langs[lang].get_vocab()
+    vocabs = langs[lang].get_vocab(synonyms=True)
     random.shuffle(vocabs)
     return default_render_template(
         'learn_vocab.html',
