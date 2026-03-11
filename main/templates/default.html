@@ -24,6 +24,12 @@
         <ul style="right: 0px; left: unset;">
             <li><a href="/settings">Settings</a></li>
             <li><a href="/logout">Log Out</a></li>
+            <hr>
+            <li><a>Your Languages</a></li>
+            {% if user.is_admin() %}
+            <hr>
+            <li><a href="/userlist">List of Users</a></li>
+            {% endif %}
         </ul>
     </div>
     {% else %}
@@ -35,6 +41,30 @@
 {% endblock %}
 
 <footer class="footer">{% include 'footer.html' %}</footer>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div id="flash-popup" class="modal" style="display: flex;">
+    <div class="modal-content">
+        <span class="close-button" onclick="yeet_flash()">&times;</span>
+        {% if messages|selectattr('0', 'equalto', 'error')|list|length > 0 %}
+        <h2 class="error">Error</h2>
+        {% else %}
+        <h2>Info</h2>
+        {% endif %}
+        {% for category, message in messages %}
+        <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function yeet_flash() {
+        document.body.removeChild(document.getElementById('flash-popup'));
+    }
+</script>
+{% endif %}
+{% endwith %}
 
 </body>
 </html>

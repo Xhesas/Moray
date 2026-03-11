@@ -10,7 +10,7 @@ static = Blueprint('static', __name__)
 
 @static.route('/')
 def route_index():
-    return default_render_template("home.html", user=current_user)
+    return default_render_template("home.html")
 
 @static.route('/main.css')
 def route_style():
@@ -42,7 +42,7 @@ def route_favicon():
 
 @static.route("/contact")
 def route_contact():
-    return default_render_template('contact.html', user=current_user)
+    return default_render_template('contact.html')
 
 @static.route("/info/<info>")
 def route_info(info):

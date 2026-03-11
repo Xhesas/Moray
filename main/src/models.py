@@ -22,11 +22,11 @@ def role_required(role):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.is_authenticated or not current_user.has_role(role):
-                flash('Access denied. Insufficient permissions.')
+                flash('Access denied. Insufficient permissions.', 'error')
                 return redirect('/')
             return f(*args, **kwargs)
         return decorated_function
     return decorator
 
 def get_user_by_id_or_name(user):
-    return (Users.query.filter_by(id=user) if type(user) == int else Users.query.filter_by(username=user)).first()
+    return (Users.query.filter_by(id=int(user)) if user.isdigit() else Users.query.filter_by(username=user)).first()

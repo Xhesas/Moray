@@ -1,12 +1,12 @@
 import os
 import re
 
-from flask import Blueprint, redirect, url_for, request
+from flask import Blueprint, redirect, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .extensions import db, profile_pictures, default_render_template
-from .models import Users, get_user_by_id_or_name
+from .models import Users, get_user_by_id_or_name, role_required
 
 auth = Blueprint('auth', __name__)
 
@@ -17,12 +17,15 @@ def route_register():
         password = request.form.get("password")
 
         if not re.fullmatch(r"[a-zA-Z]+[\w]*", username):
-            return default_render_template("sign_up.html", error="Not a valid username!")
+            flash('Not a valid username!', 'error')
+            return default_render_template("sign_up.html")
         if not 2 < len(username) < 31:
-            return default_render_template("sign_up.html", error="Username has an invalid length!")
+            flash('Username has an invalid length!', 'error')
+            return default_render_template("sign_up.html")
 
         if Users.query.filter_by(username=username).first():
-            return default_render_template("sign_up.html", error="Username already taken!")
+            flash('Username already taken!', 'error')
+            return default_render_template("sign_up.html")
 
         hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
 
@@ -46,7 +49,8 @@ def route_login():
             login_user(user, remember=True)
             return redirect('/')
         else:
-            return default_render_template("login.html", error="Invalid username or password")
+            flash('Invalid username or password', 'error')
+            return default_render_template("login.html")
 
     return default_render_template("login.html")
 
@@ -74,15 +78,14 @@ def upload_pfp():
 @login_required
 def route_settings():
     if request.method == 'POST':
-        errors = []
         if "name" in request.form:
             username = request.form.get('name')
             if not re.fullmatch(r"[a-zA-Z]+[\w]*", username):
-                errors.append("Not a valid username!")
+                flash('Not a valid username!', 'error')
             elif not 2 < len(username) < 31:
-                errors.append("Username has an invalid length!")
+                flash('Username has an invalid length!', 'error')
             elif Users.query.filter_by(username=username).first():
-                errors.append("Username already taken!")
+                flash('Username already taken!', 'error')
             else:
                 change_account_name(current_user.username, username)
         if "pfp" in request.files:
@@ -90,19 +93,55 @@ def route_settings():
                 os.remove('uploads/profile_pictures/' + str(current_user.id))
             profile_pictures.save(request.files["pfp"], name=str(current_user.id))
 
-        # return with errors if errors occurred
-        if len(errors) > 0:
-            return default_render_template('settings.html', user=current_user, errors=errors)
-    return default_render_template('settings.html', user=current_user)
+    return default_render_template('settings.html')
+
+@auth.route("/userlist")
+@login_required
+@role_required('admin')
+def route_list_users():
+    page = request.args.get('page')
+    length = request.args.get('page_length')
+    page = int(page) if page and page.isdigit() else 0
+    length = int(length) if length and length.isdigit() else 10
+    usercount = len(Users.query.all())
+    users = Users.query.all()[page*length:page*length+length] if length > 0 and page*length < usercount else Users.query.all()[0:10]
+    next_page = ('/userlist?page=' + str(page+1) + (('&page_length=' + str(length)) if length != 10 else '')) if (page+1)*length < usercount else None
+    previous_page = ('/userlist?page=' + str(page-1) + (('&page_length=' + str(length)) if length != 10 else '')) if page-1 >= 0 else None
+    return default_render_template('moderation/userlist.html', users=users, next=next_page, previous=previous_page)
+
+@auth.route("/moderation/user/<user>")
+@login_required
+@role_required('admin')
+def route_admin_actions(user):
+    if not get_user_by_id_or_name(user):
+        flash('User not found!', 'error')
+        return redirect('/userlist')
+    return default_render_template('moderation/userpage.html', moderated_user=get_user_by_id_or_name(user))
+
+@auth.route("/delete_account/<account>")
+@login_required
+@role_required('admin')
+def route_delete_user_account(account):
+    if delete_account(account):
+        flash('Deletion Successful!', 'info')
+    else:
+        flash('A problem occurred when trying to delete user ' + account + '.', 'error')
+    return redirect('/userlist', code=302)
 
 def delete_account(account):
     user = get_user_by_id_or_name(account)
+    if not user:
+        return False
     db.session.delete(user)
     db.session.commit()
     if os.path.exists('uploads/profile_pictures/' + str(user.id)):
         os.remove('uploads/profile_pictures/' + str(user.id))
+    return True
 
 def change_account_name(account, new_name):
     user = get_user_by_id_or_name(account)
+    if not user:
+        return False
     user.username = new_name
     db.session.commit()
+    return True

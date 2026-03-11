@@ -21,6 +21,11 @@ a:hover {
     color: #f2e0b8;
 }
 
+.error {
+    color: #c08080;
+    weight: bold;
+}
+
 .menu {
     background-image: linear-gradient(to bottom right, #f4c835 , #f46035);
     display: flex;

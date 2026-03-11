@@ -1,0 +1,50 @@
+{% extends 'default.html' %}
+
+{% block title %}Userlist{% endblock %}
+
+{% block content %}
+<style>
+    .table-wrapper {
+        padding: 12px 20%;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th > * {
+        margin: 25px 18px;
+    }
+    tr:nth-child(odd) {
+        background-color: #8a6155;
+    }
+    tr:nth-child(even) {
+        background-color: #897d55;
+    }
+    tr:nth-child(odd):hover {
+        background-color: #a97869;
+    }
+    tr:nth-child(even):hover {
+        background-color: #9f9264;
+    }
+</style>
+
+<div class="main">
+    <span style="margin: 0px 40%; width: 20%; white-space: nowrap; display: block;"><span style="display: flex;">
+        <a href="{{ previous }}"{% if not previous %} style="pointer-events: none;"{% endif %}>← previous</a>
+        <span style="width: 100%;"></span>
+        <a href="{{ next }}"{% if not next %} style="pointer-events: none;"{% endif %}>next →</a>
+    </span></span>
+    <div class="table-wrapper">
+    <table>
+    {% for user in users %}
+        <tr>
+            <th><a><img src="/profile/picture/{{ user.username }}" alt="Profile" class="pfp" style="width: 50px; height: 50px;"/></a></th>
+            <th><p>{{ user.username }}</p></th>
+            <th><a href="/moderation/user/{{ user.username }}">Open in Mod View</a></th>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+</div>
+
+{% endblock %}

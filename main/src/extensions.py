@@ -1,5 +1,5 @@
 from flask import render_template
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, IMAGES
 
@@ -17,4 +17,4 @@ langs = {
 }
 
 def default_render_template(*args, **kwargs):
-    return render_template(*args, **kwargs, langs=langs)
+    return render_template(*args, **kwargs, langs=langs, user=current_user)

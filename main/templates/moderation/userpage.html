@@ -1,0 +1,26 @@
+{% extends 'default.html' %}
+
+{% block title %}{{ moderated_user.username }}{% endblock %}
+
+{% block content %}
+<div class="main">
+    <fieldset>
+        <legend><h3>Profile</h3></legend>
+        <ul>
+            <li><a><img src="/profile/picture/{{ moderated_user.username }}" alt="Profile" class="pfp" style="width: 50px; height: 50px;"/></a></li>
+            <li><p>{{ moderated_user.username }}</p></li>
+            <li><p>{{ moderated_user.id }}</p></li>
+            <li><p>{{ moderated_user.role }}</p></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend><h3>Moderation Actions</h3></legend>
+        <ul>
+            <li><a onclick="delete_account({{ moderated_user.id }})" class="danger-button">Delete Account</a></li>
+        </ul>
+    </fieldset>
+</div>
+
+<script src="/js/moderation.js"></script>
+<script src="/js/common.js"></script>
+{% endblock %}
