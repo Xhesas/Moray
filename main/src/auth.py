@@ -1,5 +1,6 @@
 import os
 import re
+from urllib.parse import quote_plus
 
 from flask import Blueprint, redirect, url_for, request, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -39,6 +40,7 @@ def route_register():
 
 @auth.route("/login", methods=["GET", "POST"])
 def route_login():
+    link = request.args.get('next')
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -47,12 +49,14 @@ def route_login():
 
         if user and check_password_hash(user.password, password):
             login_user(user, remember=True)
+            if link:
+                return redirect(link)
             return redirect('/')
         else:
             flash('Invalid username or password', 'error')
             return default_render_template("login.html")
 
-    return default_render_template("login.html")
+    return default_render_template("login.html", next=quote_plus(link) if link else None)
 
 @auth.route("/logout")
 @login_required
