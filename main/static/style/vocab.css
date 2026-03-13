@@ -1,0 +1,72 @@
+.vocab-card {
+    background: #a6a49f;
+    box-shadow: 0px 0px 5px 8px #292929;
+    border-radius: 10px;
+    color: black;
+    padding: 18px;
+    margin: 0px 275px;
+}
+
+.vocab-wrapper {
+    justify-content: center;
+    display: flex;
+}
+
+.vocab-container {
+    position: relative;
+    width: fit-content;
+}
+
+.vocab {
+    margin: 10px 0px;
+}
+
+.vocab-notes {
+    position: absolute;
+    top: 0%;
+    left: 110%;
+    display: block;
+    font-style: oblique;
+}
+
+.counter {
+    position: relative;
+    top: 24px;
+    left: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 0px;
+}
+
+@keyframes incorrect {
+    0% { left: 0px; }
+    5% { left: -25px; }
+    15% { left: 25px; }
+    25% { left: -20px; }
+    35% { left: 20px; }
+    45% { left: -15px; }
+    55% { left: 15px; }
+    65% { left: -10px; }
+    75% { left: 10px; }
+    85% { left: -5px; }
+    95% { left: 5px; }
+    100% { left: 0px; }
+}
+
+.incorrect {
+    position: relative;
+    animation: incorrect 1s;
+}
+
+@keyframes correct {
+    0% { top: 0px; }
+    33% { top: -10px; }
+    67% { top: 10px; }
+    100% { top: 0px; }
+}
+
+.correct {
+    position: relative;
+    animation: correct .3s;
+}

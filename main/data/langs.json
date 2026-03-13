@@ -6,11 +6,13 @@
         },
         {
             "deu": "du",
-            "eng": "you"
+            "eng": "you",
+            "note-eng": "sg."
         },
         {
             "deu": "sie",
-            "eng": "she"
+            "eng": "she",
+            "note": "sg."
         },
         {
             "deu": "er",
@@ -33,19 +35,23 @@
         },
         {
             "deu": "sie",
-            "eng": "they"
+            "eng": "they",
+            "note": "pl."
         },
         {
             "deu": "die",
-            "eng": "the"
+            "eng": "the",
+            "note-eng": "fem."
         },
         {
             "deu": "der",
-            "eng": "the"
+            "eng": "the",
+            "note-eng": "masc."
         },
         {
             "deu": "das",
-            "eng": "the"
+            "eng": "the",
+            "note-eng": "neut."
         },
         {
             "deu": "dieses",
@@ -117,7 +123,10 @@
         },
         {
             "deu": "Kind",
-            "eng": "child"
+            "eng": [
+                "child",
+                "kid"
+            ]
         },
         {
             "deu": "Mutter",
@@ -174,11 +183,17 @@
         },
         {
             "lvk": "mavk",
-            "eng": "you"
+            "eng": "you",
+            "note-eng": "sg."
         },
         {
             "lvk": "mamk",
-            "eng": "it"
+            "eng": [
+                "it",
+                "they",
+                "he",
+                "she"
+            ]
         },
         {
             "lvk": "mek",
@@ -197,7 +212,8 @@
         },
         {
             "lvk": "qvak",
-            "eng": "the"
+            "eng": "the",
+            "note-eng": "def."
         },
         {
             "lvk": "nak",
@@ -249,19 +265,34 @@
         },
         {
             "lvk": "aŋak",
-            "eng": "human"
+            "eng": [
+                "human",
+                "person",
+                "someone"
+            ]
         },
         {
             "lvk": "niniak",
-            "eng": "child"
+            "eng": [
+                "child",
+                "kid"
+            ]
         },
         {
             "lvk": "sivak",
-            "eng": "parent"
+            "eng": [
+                "parent",
+                "mother",
+                "father"
+            ]
         },
         {
             "lvk": "givmoak",
-            "eng": "sibling"
+            "eng": [
+                "sibling",
+                "sister",
+                "brother"
+            ]
         },
         {
             "lvk": "kelinhak",
@@ -269,7 +300,10 @@
         },
         {
             "lvk": "vak",
-            "eng": "animal"
+            "eng": [
+                "animal",
+                "life"
+            ]
         },
         {
             "lvk": "bevak",

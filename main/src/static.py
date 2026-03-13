@@ -16,6 +16,10 @@ def route_index():
 def route_style():
     return send_file('static/style/main.css')
 
+@static.route('/style/<file>')
+def route_styles(file):
+    return send_from_directory('static/style/', file)
+
 @static.route("/profile/picture/<profile>")
 def route_pfp(profile):
     user = get_user_by_id_or_name(profile)

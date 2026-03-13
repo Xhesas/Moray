@@ -2,14 +2,24 @@
 
 {% block title %}Learn{% endblock %}
 
+{% block links %}
+<link rel="stylesheet" href="/style/vocab.css">
+{% endblock %}
+
 {% block content %}
 <div class="main">
-    <div class="vocab_card"> {# vocab learning module #}
+    <div class="vocab-card"> {# vocab learning module #}
+        <div class="counter"><p id="count">0</p><p style="width: 12px;"> / </p><p id="total">0</p></div>
         <p>what does</p>
-        <h3 id="vocab"></h3>
+        <div class="vocab-wrapper">
+            <div class="vocab-container">
+                <h3 id="vocab" class="vocab"></h3>
+                <p id="notes" class="vocab-notes"></p>
+            </div>
+        </div>
         <p>mean?</p>
         <br>
-        <label>Input your answer:
+        <label id="input">Input your answer:
             <input id="answer" type="text" />
         </label>
     </div>
