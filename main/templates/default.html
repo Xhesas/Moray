@@ -21,8 +21,9 @@
     <span style="width: 100%"></span>
     {% if user and user.is_authenticated %}
     <div>
-        <a><img src="/profile/picture/me" alt="Profile" class="pfp"/></a>
+        <a href="/profile/me"><img src="/profile/me/picture" alt="Profile" class="pfp"/></a>
         <ul style="right: 0px; left: unset;">
+            <li><a href="/profile/me">Profile</a></li>
             <li><a href="/settings">Settings</a></li>
             <li><a href="/logout">Log Out</a></li>
             <hr>

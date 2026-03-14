@@ -5,11 +5,12 @@ from os import chdir
 from os.path import dirname, abspath
 
 from flask import Flask, make_response
+from flask_migrate import upgrade, init, migrate, downgrade
 from flask_uploads import configure_uploads  # do 'pip install flask-reuploaded' instead of using the deprecated 'flask-uploads'
 from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from main.src.extensions import db, login_manager, profile_pictures, langs, default_render_template
+from main.src.extensions import db, login_manager, profile_pictures, langs, default_render_template, migrate as migrate_db
 
 chdir(dirname(abspath(__file__)))
 
@@ -27,6 +28,7 @@ def create_app():
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
     db.init_app(app)
+    migrate_db.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = "auth.route_login"
 
@@ -51,6 +53,9 @@ def create_app():
     from main.src.lang import lang_app
     app.register_blueprint(lang_app)
 
+    from main.src.profile import profile_app
+    app.register_blueprint(profile_app)
+
     with app.app_context():
         db.create_all()
 
@@ -59,6 +64,10 @@ def create_app():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--Debug", action="store_true", help="Activate debug mode")
+    parser.add_argument("-i", "--Initiate", action="store_true", help="Initiate database")
+    parser.add_argument("-p", "--Prepare", action="store_true", help="Prepare database")
+    parser.add_argument("-u", "--Upgrade", action="store_true", help="Upgrade database")
+    parser.add_argument("-dg", "--Downgrade", action="store_true", help="Downgrade database")
     args = parser.parse_args()
     app = create_app()
     # set proper wsgi for app if not debug
@@ -66,4 +75,24 @@ if __name__ == "__main__":
         app.wsgi_app = ProxyFix(
             app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
         )
+    if args.Initiate:
+        with app.app_context():
+            print('initiate database upgrade...')
+            init()
+        exit(0)
+    if args.Prepare:
+        with app.app_context():
+            print('preparing upgrade...')
+            migrate()
+        exit(0)
+    if args.Upgrade:
+        with app.app_context():
+            print('upgrading database...')
+            upgrade()
+        exit(0)
+    if args.Downgrade:
+        with app.app_context():
+            print('Downgrading database...')
+            downgrade()
+        exit(0)
     app.run(debug=args.Debug)

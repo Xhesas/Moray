@@ -7,7 +7,7 @@
     <fieldset>
         <legend><h3>Profile</h3></legend>
         <ul>
-            <li><a><img src="/profile/picture/{{ moderated_user.username }}" alt="Profile" class="pfp" style="width: 50px; height: 50px;"/></a></li>
+            <li><a href="/profile/{{ moderated_user.username }}"><img src="/profile/{{ moderated_user.username }}/picture" alt="Profile" class="pfp" style="width: 50px; height: 50px;"/></a></li>
             <li><p>{{ moderated_user.username }}</p></li>
             <li><p>{{ moderated_user.id }}</p></li>
             <li><p>{{ moderated_user.role }}</p></li>

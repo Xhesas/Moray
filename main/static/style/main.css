@@ -21,6 +21,26 @@ a:hover {
     color: #f2e0b8;
 }
 
+input[type=text], input[type=password], textarea {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    background-color: #212121;
+    color: #cecece;
+    padding: 4px;
+    border: solid 2px #616161;
+    border-radius: 8px;
+}
+
+input[type=text]:focus-visible, input[type=password]:focus-visible, textarea:focus-visible {
+    border-color: #d9a633;
+    color: #dfdfdf;
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
 .error {
     color: #c08080;
     weight: bold;
@@ -161,6 +181,41 @@ label.edit_pfp {
 }
 .menu a:has(> .pfp) {
     padding-top: 2px;
+}
+
+.profile-card {
+    text-align: left;
+    width: fit-content;
+    margin: auto;
+    padding: 8px;
+}
+
+.profile-name {
+    margin: 2px 0;
+}
+
+.profile-pronouns {
+    margin: 2px 0;
+}
+
+.profile-description {
+    width: fit-content;
+    max-width: 250px;
+    margin: 24px 0;
+    padding: 8px;
+    left: -8px;
+    position: relative;
+    background-color: #212121;
+    border-radius: 12px;
+    overflow-wrap: break-word;
+}
+
+.date-wrapper {
+    font-size: 14px;
+}
+
+.date-wrapper > p {
+    margin: 2px 0;
 }
 
 .modal {

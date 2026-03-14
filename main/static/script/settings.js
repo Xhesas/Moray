@@ -9,9 +9,9 @@ document.getElementById('image').addEventListener('change', e => {
 });
 
 // disable submit button when nothing was changed
-const inputs = document.querySelectorAll("input, select");
+const inputs = document.querySelectorAll("input, select, textarea");
 for (const el of inputs){
-    el.oldValue = el.value + el.checked;
+    el.oldValue = el.value + el.checked + el.innerHTML;
 }
 
 // Declares function and call it directly
@@ -19,7 +19,7 @@ var setEnabled;
 (setEnabled = function() {
     var e = true;
     for (const el of inputs) {
-        if (el.oldValue !== (el.value + el.checked)) {
+        if (el.oldValue !== (el.value + el.checked + el.innerHTML)) {
             e = false;
             break;
         }
@@ -36,7 +36,7 @@ async function submit_form() {
     form.action = '/settings';
     form.enctype = 'multipart/form-data';
     for (const el of inputs){
-        if (el.oldValue !== (el.value + el.checked)) {
+        if (el.oldValue !== (el.value + el.checked + el.innerHTML)) {
             form.appendChild(el);
         }
     }

@@ -10,6 +10,9 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     role = db.Column(db.String(20), default='user')
+    date_joined = db.Column(db.DateTime, nullable=False)
+    pronouns = db.Column(db.String(25), nullable=True)
+    description = db.Column(db.String(500), nullable=True)
 
     def has_role(self, role):
         return self.role == role

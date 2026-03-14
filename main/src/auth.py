@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import datetime
 from urllib.parse import quote_plus
 
 from flask import Blueprint, redirect, url_for, request, flash
@@ -30,7 +31,7 @@ def route_register():
 
         hashed_password = generate_password_hash(password, method="pbkdf2:sha256")
 
-        new_user = Users(username=username, password=hashed_password)
+        new_user = Users(username=username, password=hashed_password, date_joined=datetime.now().date())
         db.session.add(new_user)
         db.session.commit()
 
@@ -92,6 +93,18 @@ def route_settings():
                 flash('Username already taken!', 'error')
             else:
                 change_account_name(current_user.username, username)
+        if "pronouns" in request.form:
+            pronouns = request.form.get('pronouns')
+            if not len(pronouns) < 26:
+                flash('Pronouns have an invalid length!', 'error')
+            else:
+                change_account_pronouns(current_user.username, pronouns if len(pronouns) > 0 else None)
+        if "description" in request.form:
+            description = request.form.get('description')
+            if not len(description) < 500:
+                flash('Description has an invalid length!', 'error')
+            else:
+                change_account_description(current_user.username, description if len(description) > 0 else None)
         if "pfp" in request.files:
             if os.path.exists('uploads/profile_pictures/' + str(current_user.id)):
                 os.remove('uploads/profile_pictures/' + str(current_user.id))
@@ -147,5 +160,21 @@ def change_account_name(account, new_name):
     if not user:
         return False
     user.username = new_name
+    db.session.commit()
+    return True
+
+def change_account_pronouns(account, pronouns):
+    user = get_user_by_id_or_name(account)
+    if not user:
+        return False
+    user.pronouns = pronouns
+    db.session.commit()
+    return True
+
+def change_account_description(account, description):
+    user = get_user_by_id_or_name(account)
+    if not user:
+        return False
+    user.description = description
     db.session.commit()
     return True
