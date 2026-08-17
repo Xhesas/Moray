@@ -1,6 +1,6 @@
 from flask import Blueprint, send_file, send_from_directory, abort
 
-from main.src.extensions import default_render_template
+from .extensions import default_render_template
 
 static = Blueprint('static', __name__)
 

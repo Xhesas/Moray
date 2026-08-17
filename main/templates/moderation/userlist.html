@@ -2,34 +2,14 @@
 
 {% block title %}Userlist{% endblock %}
 
+{% block links %}
+<link rel="stylesheet" href="/style/userlist.css">
+{% endblock %}
+
 {% block content %}
-<style>
-    .table-wrapper {
-        padding: 12px 20%;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th > * {
-        margin: 25px 18px;
-    }
-    tr:nth-child(odd) {
-        background-color: #8a6155;
-    }
-    tr:nth-child(even) {
-        background-color: #897d55;
-    }
-    tr:nth-child(odd):hover {
-        background-color: #a97869;
-    }
-    tr:nth-child(even):hover {
-        background-color: #9f9264;
-    }
-</style>
 
 <div class="main">
-    <span style="margin: 0px 40%; width: 20%; white-space: nowrap; display: block;"><span style="display: flex;">
+    <span class="links-wrapper"><span class="links">
         <a href="{{ previous }}"{% if not previous %} style="pointer-events: none;"{% endif %}>← previous</a>
         <span style="width: 100%;"></span>
         <a href="{{ next }}"{% if not next %} style="pointer-events: none;"{% endif %}>next →</a>

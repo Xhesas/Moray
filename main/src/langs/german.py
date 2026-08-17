@@ -1,6 +1,6 @@
 
 
-from main.src.langs import Lang
+from src.langs import Lang
 
 class German(Lang):
     def __init__(self):

@@ -168,7 +168,100 @@
     "nld": [],
     "spa": [],
     "fra": [],
-    "ukr": [],
+    "ukr": [
+        {
+            "ukr": "тут",
+            "eng": "here"
+        },
+        {
+            "ukr": "там",
+            "eng": "there"
+        },
+        {
+            "ukr": "хто",
+            "eng": "who"
+        },
+        {
+            "ukr": "що",
+            "eng": "what"
+        },
+        {
+            "ukr": "де",
+            "eng": "wherre"
+        },
+        {
+            "ukr": "коли",
+            "eng": "when"
+        },
+        {
+            "ukr": "як",
+            "eng": "how"
+        },
+        {
+            "ukr": "не",
+            "eng": "not"
+        },
+        {
+            "ukr": "все",
+            "eng": "all"
+        },
+        {
+            "ukr": "багато",
+            "eng": "many"
+        },
+        {
+            "ukr": "кілька",
+            "eng": "some"
+        },
+        {
+            "ukr": "інший",
+            "eng": "other"
+        },
+        {
+            "ukr": "один",
+            "eng": "one"
+        },
+        {
+            "ukr": "два",
+            "eng": "two"
+        },
+        {
+            "ukr": "три",
+            "eng": "three"
+        },
+        {
+            "ukr": "чотири",
+            "eng": "four"
+        },
+        {
+            "ukr": "п'ять",
+            "eng": "five"
+        },
+        {
+            "ukr": "великий",
+            "eng": "big"
+        },
+        {
+            "ukr": "довгий",
+            "eng": "long"
+        },
+        {
+            "ukr": "широкий",
+            "eng": "wide"
+        },
+        {
+            "ukr": "товстий",
+            "eng": "thick"
+        },
+        {
+            "ukr": "важкий",
+            "eng": "heavy"
+        },
+        {
+            "ukr": "маленький",
+            "eng": "small"
+        }
+    ],
     "jpn": [],
     "bel": [
         {

@@ -12,7 +12,7 @@ function init(){
     }
 }
 
-function run_default(reverse=false) {
+function run_default(reverse=false, case_sensitive=false) {
     const answer = document.getElementById('answer');
     const input = document.getElementById('input');
     const count = document.getElementById('count');
@@ -25,7 +25,7 @@ function run_default(reverse=false) {
         // check if answer is correct, else return
         if (index !== 0) {
             word = reverse ? [words[index-1]['w']] : words[index-1]['t']
-            if (!word.includes(answer.value)) {
+            if (!(case_sensitive ? word : word.map((it) => it.toLowerCase())).includes((case_sensitive ? answer.value : answer.value.toLowerCase()).trim())) {
                 value = 0;
                 if (input.querySelector('#idk-button') == null) {
                     let idk_button = document.createElement('button');

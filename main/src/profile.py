@@ -3,8 +3,8 @@ import os
 from flask import Blueprint, abort, redirect, send_file, send_from_directory
 from flask_login import login_required, current_user
 
-from main.src.extensions import default_render_template
-from main.src.models import get_user_by_id_or_name
+from .extensions import default_render_template
+from .models import get_user_by_id_or_name
 
 profile_app = Blueprint('profile', __name__)
 

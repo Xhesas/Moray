@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"{% if user and user.theme %} class="theme-{{ user.theme }}"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,9 @@
 </head>
 <body>
 <nav class="menu">
+    <div class="menu-logo" onclick="location.href='/'">
+        <img src="/resources/moray-logo-menu.png" alt="MORAY">
+    </div>
     <div>
         <a>Languages</a>
         <ul>
@@ -21,7 +24,7 @@
     <span style="width: 100%"></span>
     {% if user and user.is_authenticated %}
     <div>
-        <a href="/profile/me"><img src="/profile/me/picture" alt="Profile" class="pfp"/></a>
+        <a href="/profile/me" class="preventOnMobile"><img src="/profile/me/picture" alt="Profile" class="pfp"/></a>
         <ul style="right: 0px; left: unset;">
             <li><a href="/profile/me">Profile</a></li>
             <li><a href="/settings">Settings</a></li>

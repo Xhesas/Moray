@@ -1,10 +1,25 @@
 .vocab-card {
-    background: #a6a49f;
-    box-shadow: 0px 0px 5px 8px #292929;
+    background: var(--color-background3);
+    box-shadow: 0px 0px 5px 8px var(--color-border4);
     border-radius: 10px;
-    color: black;
+    color: var(--color-text7);
     padding: 18px;
-    margin: 0px 275px;
+    margin: 0 25%;
+}
+@media screen and (max-width: 1000px) {
+    .vocab-card {
+        margin: 0 15%;
+    }
+}
+@media screen and (max-width: 750px) {
+    .vocab-card {
+        margin: 0 5%;
+    }
+}
+@media screen and (max-width: 500px) {
+    .vocab-card {
+        margin: 0;
+    }
 }
 
 .vocab-wrapper {

@@ -1,0 +1,82 @@
+/* menu */
+
+.menu {
+    background-image: linear-gradient(to bottom right, var(--color-theme1) , var(--color-theme2));
+    display: flex;
+    height: 54px;
+    white-space: nowrap;
+}
+.menu div {
+    cursor: pointer;
+}
+.menu > div, .menu > a {
+    position: relative;
+}
+.menu a {
+    display: block;
+    color: var(--color-link2);
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    border-radius: 100%;
+    @media (max-width: 500px) {
+        padding: 14px 8px;
+    }
+}
+.menu div ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-link1);
+    border-radius: 0 0 12px 12px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    min-width: 150px;
+    width: max-content;
+    max-width: 512px;
+    z-index: 1000;
+}
+.menu div ul li {
+    width: 100%;
+}
+.menu div ul li a {
+    display: block;
+    padding: 10px;
+    text-align: left;
+    color: var(--color-link2);
+}
+.menu div:hover ul {
+    display: block;
+}
+.menu a:hover,
+.menu div ul li a:hover {
+    background-color: var(--color-theme3);
+    color: var(--color-link2-focus);
+    border-radius: 10px;
+    transition: border-radius .3s cubic-bezier(0.03, 1.12, 0.28, 0.87), color 1s, background-color .3s;
+}
+.menu a .box {
+    border: 1px solid var(--color-link2);
+    border-radius: 8px;
+    padding: 4px;
+}
+.menu a:hover .box {
+    border-color: var(--color-link2-focus);
+    transition: border-color 1s;
+}
+.menu-logo {
+    height: 54px;
+    cursor: pointer;
+    & img {
+        @media (min-width: 501px) {
+            height: 34px;
+            margin: 10px 12px;
+        }
+        @media (max-width: 500px) {
+            width: 75%;
+            margin: calc((54px - (75% / 4.360882352941176)) / 2) 12px;
+        }
+    }
+}

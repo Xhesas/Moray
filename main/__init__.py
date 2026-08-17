@@ -10,9 +10,11 @@ from flask_uploads import configure_uploads  # do 'pip install flask-reuploaded'
 from werkzeug.exceptions import HTTPException
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from main.src.extensions import db, login_manager, profile_pictures, langs, default_render_template, migrate as migrate_db
 
 chdir(dirname(abspath(__file__)))
+
+from src.extensions import db, login_manager, profile_pictures, langs, default_render_template, migrate as migrate_db
+
 
 def create_app():
     app = Flask(__name__)
@@ -34,7 +36,7 @@ def create_app():
 
     configure_uploads(app, profile_pictures)
 
-    from main.src.models import Users
+    from src.models import Users
     @login_manager.user_loader
     def load_user(user_id):
         return Users.query.get(int(user_id))
@@ -44,16 +46,16 @@ def create_app():
         code = e if type(e) == int else e.code
         return make_response(default_render_template('exception.html', code=code), code)
 
-    from main.src.auth import auth
+    from src.auth import auth
     app.register_blueprint(auth)
 
-    from main.src.static import static
+    from src.static import static
     app.register_blueprint(static)
 
-    from main.src.lang import lang_app
+    from src.lang import lang_app
     app.register_blueprint(lang_app)
 
-    from main.src.profile import profile_app
+    from src.profile import profile_app
     app.register_blueprint(profile_app)
 
     with app.app_context():
@@ -95,4 +97,19 @@ if __name__ == "__main__":
             print('Downgrading database...')
             downgrade()
         exit(0)
-    app.run(debug=args.Debug)
+    app.run(debug=args.Debug, host="0.0.0.0" if args.Debug else "127.0.0.1")
+
+    # TODO:
+    # - [ ] fix css stuff
+    #   - [x] split css over more cleaner files
+    #   - [x] make it work for more devices
+    #   - [ ] add darkmode/lightmode
+    #     - [x] add proper css vars
+    #     - [ ] actually add lightmode colors
+    #     - [ ] add theme change thingy in settings
+    # - [ ] add translation keys
+    # - [ ] add change password function
+    #   - [ ] let people change their own password
+    #   - [ ] let moderators change peoples password
+    # - [ ] add moderator role
+    # - [ ] make administrator bypass role restrictions
